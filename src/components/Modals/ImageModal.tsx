@@ -43,7 +43,6 @@ export const ImageModal = ({
   );
 };
 
-// СТИЛІ
 const ModalBackdrop = styled.div`
   position: fixed;
   inset: 0;

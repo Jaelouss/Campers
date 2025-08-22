@@ -27,7 +27,6 @@ export const Badges = ({
   const isFilterBadge = Object.values(FILTERS_BADGES).some(
     (arr) => arr === featuresToShow
   );
-  const isVehicleType = featuresToShow === FILTERS_BADGES.VEHICLE_TYPE;
 
   const toText = (value: unknown, fallback: string) => {
     if (typeof value === "string" || typeof value === "number") {
@@ -68,8 +67,8 @@ export const Badges = ({
           return (
             <Badge key={key}>
               <input
-                type={isVehicleType ? "radio" : "checkbox"}
-                name={isVehicleType ? "form" : key}
+                type="checkbox"
+                name={key}
                 value={key}
                 defaultChecked={false}
               />
@@ -116,6 +115,7 @@ const BadgeContent = styled.span`
   gap: 4px;
   width: 100%;
   height: 100%;
+  user-select: none;
 `;
 const BadgeDefault = styled.span`
   display: flex;
@@ -125,6 +125,7 @@ const BadgeDefault = styled.span`
   border-radius: 100px;
   background: var(--Badges);
   width: fit-content;
+  user-select: none;
   @media (width>=500px) {
     padding: 8px 12px;
   }

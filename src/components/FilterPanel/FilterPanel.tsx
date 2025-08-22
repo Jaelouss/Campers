@@ -190,7 +190,7 @@ const OpenButton = styled.button`
   cursor: pointer;
   font-size: 16px;
   font-weight: bold;
-  color: var(--Button); /* колір стрілок */
+  color: var(--Button);
   display: flex;
   justify-content: center;
   align-items: center;

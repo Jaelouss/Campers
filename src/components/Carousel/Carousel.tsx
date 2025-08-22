@@ -94,7 +94,6 @@ export const Carousel = ({ gallery }: CarouselProps) => {
   );
 };
 
-// СТИЛІ
 const Wrapper = styled.div`
   display: flex;
   align-items: center;

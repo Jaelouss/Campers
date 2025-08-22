@@ -98,7 +98,6 @@ const DateInputWrapper = styled.div`
     grid-template-rows: repeat(5, 1fr) !important;
   }
 
-  /* Дати */
   .react-datepicker__day,
   .react-datepicker__month-text,
   .react-datepicker__quarter-text,
@@ -112,7 +111,6 @@ const DateInputWrapper = styled.div`
     color: var(--Main, #101828) !important;
   }
 
-  /* Hover та вибрані стани */
   .react-datepicker__day:hover,
   .react-datepicker__month-text:hover,
   .react-datepicker__quarter-text:hover,
