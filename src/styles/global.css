@@ -1,0 +1,29 @@
+.no-scroll {
+  overflow: hidden;
+  height: 100vh;
+}
+
+body {
+  font-family: var(--font-family-base);
+}
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 16px;
+  box-sizing: border-box;
+  @media (width>=768px) {
+    padding: 0 32px;
+  }
+  @media (width>=1440px) {
+    padding: 0 64px;
+  }
+}
+.logo {
+  width: 100px;
+  height: 12px;
+
+  @media (width>= 768px) {
+    width: 136px;
+    height: 16px;
+  }
+}

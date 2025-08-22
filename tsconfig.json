@@ -1,0 +1,26 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@components": ["components/index"],
+      "@components/*": ["components/*"],
+      "@pages": ["pages/index"],
+      "@pages/*": ["pages/*"],
+      "@assets": ["assets/index"],
+      "@assets/*": ["assets/*"],
+      "@constants/*": ["constants/*"],
+      "@UI/*": ["components/UI/*"],
+      "@UI": ["components/UI/index"],
+      "@type/*": ["types/*"],
+      "@api": ["api/campersApi.ts"],
+      "@store/*": ["store/*"],
+      "@hooks/*": ["hooks/*"],
+      "@utils/*": ["utils/*"]
+    }
+  }
+}

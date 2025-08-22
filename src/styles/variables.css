@@ -1,0 +1,14 @@
+:root {
+  --Main: #101828;
+  --Text: #475467;
+  --White: #ffffff;
+  --Inputs: #f7f7f7;
+  --Badges: #f2f4f7;
+  --Gray: #6c717b;
+  --Gray-Light: #dadde1;
+  --Button: #e44848;
+  --Button-Hover: #d84343;
+  --Rating: #ffc531;
+
+  --font-family-base: "Inter", sans-serif;
+}
