@@ -1,17 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 export const Tabs = ({ onChange }: { onChange: (arg0: string) => void }) => {
-  const [activeTab, setActiveTab] = useState("Features");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const params = new URLSearchParams(location.search);
+  const initialTab = params.get("tab") || "Features";
+
+  const [activeTab, setActiveTab] = useState(initialTab);
+
+  useEffect(() => {
+    onChange(activeTab);
+  }, [activeTab, onChange]);
+
+  const handleClick = (tab: string) => {
+    setActiveTab(tab);
+
+    const newParams = new URLSearchParams(location.search);
+    newParams.set("tab", tab);
+
+    navigate(`${location.pathname}?${newParams.toString()}`, {
+      replace: true,
+    });
+  };
 
   return (
     <Box>
       <TabButton
         type="button"
-        onClick={() => {
-          setActiveTab("Features");
-          onChange("Features");
-        }}
+        onClick={() => handleClick("Features")}
         active={activeTab === "Features"}
       >
         Features
@@ -19,10 +38,7 @@ export const Tabs = ({ onChange }: { onChange: (arg0: string) => void }) => {
 
       <TabButton
         type="button"
-        onClick={() => {
-          setActiveTab("Reviews");
-          onChange("Reviews");
-        }}
+        onClick={() => handleClick("Reviews")}
         active={activeTab === "Reviews"}
       >
         Reviews

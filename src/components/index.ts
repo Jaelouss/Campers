@@ -11,3 +11,4 @@ export { BookForm } from "./BookForm/BookForm";
 export { FeaturesCard } from "./FeaturesCard/FeaturesCard";
 export { BookingFormModal } from "./Modals/BookingFormModal";
 export { ImageModal } from "./Modals/ImageModal";
+export { Loader } from "./Loader/Loader";

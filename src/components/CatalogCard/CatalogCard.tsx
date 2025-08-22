@@ -19,7 +19,12 @@ export const CatalogCard = ({ car }: { car: Camper }) => {
             </PriceWrapper>
           </TitleWrapper>
           <RatingWrapper>
-            <Rating type="Single" rating={car.rating} reviews={car.reviews} />
+            <Rating
+              id={car.id}
+              type="Single"
+              rating={car.rating}
+              reviews={car.reviews}
+            />
             <CampLocation location={car.location} />
           </RatingWrapper>
         </Header>

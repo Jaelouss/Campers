@@ -7,7 +7,14 @@ import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 
 interface Props {
-  type: "Search" | "Load more" | "Send" | "View Now" | "Show more" | "Favorite";
+  type:
+    | "Search"
+    | "Load more"
+    | "Send"
+    | "View Now"
+    | "Show more"
+    | "Favorite"
+    | "Reset";
   id?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   isEndOfList?: boolean;
@@ -56,6 +63,12 @@ export const CustomButton = ({ type, id, onClick, isEndOfList }: Props) => {
         >
           {type}
         </LinkBtn>
+      );
+    case "Reset":
+      return (
+        <ResetBtn onClick={onClick} type="button">
+          Reset
+        </ResetBtn>
       );
   }
 };
@@ -114,6 +127,7 @@ const LinkBtn = styled(Link)`
     padding: 16px 60px;
   }
 `;
+
 const FavoriteBtn = styled.button`
   background-color: transparent;
   border: none;
@@ -124,4 +138,19 @@ const FavoriteBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const ResetBtn = styled.button`
+  ${buttonBaseStyles};
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--Gray-Light);
+  color: var(--Main);
+  width: 100%;
+  @media (width>=500px) {
+    padding: 12px 32px;
+  }
+  @media (width>=1440px) {
+    padding: 16px 60px;
+  }
 `;

@@ -1,20 +1,27 @@
 import { StarRating } from "@assets";
+import { ROUTES } from "@constants/routes";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 interface Props {
   type: "Single" | "Rating";
   reviews?: object[];
   rating: number;
+  id?: string;
 }
 
-export const Rating = ({ type, reviews, rating }: Props) => {
+export const Rating = ({ id, type, reviews, rating }: Props) => {
   const maxRating = 5;
   const clipPercent = ((maxRating - rating) / maxRating) * 100;
 
   switch (type) {
     case "Single":
       return (
-        <Box>
+        <Box
+          to={
+            ROUTES.details.link + id + ROUTES.reviews.link + ROUTES.reviews.hash
+          }
+        >
           <StarRating color="var(--Rating)" stroke="var(--Rating)" />
           <Span>
             {rating} ({reviews?.length} Reviews)
@@ -47,7 +54,7 @@ const flexCenter = `
   align-items: center;
 `;
 
-const Box = styled.div`
+const Box = styled(Link)`
   ${flexCenter};
   gap: 4px;
   position: relative;
@@ -66,7 +73,9 @@ const StarsWrapper = styled.div`
   ${flexCenter};
 `;
 
-const YellowBox = styled.div<{ clipPercent: number }>`
+const YellowBox = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "clipPercent",
+})<{ clipPercent: number }>`
   position: absolute;
   top: 0;
   left: 0;

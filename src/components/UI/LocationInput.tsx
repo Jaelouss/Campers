@@ -3,14 +3,15 @@ import { selectLocations } from "@store/locations/locationsSelector";
 import { useState, useMemo, useEffect } from "react";
 import { useSelector } from "react-redux";
 import styled, { css } from "styled-components";
+import type { CamperFilters } from "@type/camperApiTypes";
 
 interface Props {
-  filters: { location?: string };
+  filters: CamperFilters;
 }
 
 export const LocationInput = ({ filters }: Props) => {
   const allLocations = useSelector(selectLocations);
-  const [userSearch, setUserSearch] = useState("");
+  const [userSearch, setUserSearch] = useState(filters.location || "");
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {

@@ -1,27 +1,32 @@
 import { useImageModalNavigation } from "@hooks/useImageModalNavigation";
 import type { GalleryItem } from "@type/camperApiTypes";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 interface Props {
   gallery: GalleryItem[];
-  activeIndex: number;
-  setActiveIndex: (i: number) => void;
+  initialIndex: number;
   isOpen: boolean;
   onClose: () => void;
 }
 
 export const ImageModal = ({
   gallery,
-  activeIndex,
-  setActiveIndex,
+  initialIndex,
   isOpen,
   onClose,
 }: Props) => {
+  const [localIndex, setLocalIndex] = useState(initialIndex);
+
+  useEffect(() => {
+    setLocalIndex(initialIndex);
+  }, [initialIndex, isOpen]);
+
   const getIndex = (i: number) =>
     ((i % gallery.length) + gallery.length) % gallery.length;
 
-  const handlePrev = () => setActiveIndex(getIndex(activeIndex - 1));
-  const handleNext = () => setActiveIndex(getIndex(activeIndex + 1));
+  const handlePrev = () => setLocalIndex(getIndex(localIndex - 1));
+  const handleNext = () => setLocalIndex(getIndex(localIndex + 1));
 
   useImageModalNavigation({
     onClose,
@@ -29,13 +34,12 @@ export const ImageModal = ({
     handlePrev,
   });
 
-  if (!isOpen) return null;
+  if (!isOpen || gallery.length === 0) return null;
 
   return (
     <ModalBackdrop onClick={onClose}>
       <ModalWrapper onClick={(e) => e.stopPropagation()}>
-        <ModalImage src={gallery[activeIndex].original} />
-
+        <ModalImage src={gallery[getIndex(localIndex)].thumb} />
         <ModalButtonLeft onClick={handlePrev}>&lt;</ModalButtonLeft>
         <ModalButtonRight onClick={handleNext}>&gt;</ModalButtonRight>
       </ModalWrapper>

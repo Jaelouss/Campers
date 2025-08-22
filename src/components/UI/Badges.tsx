@@ -1,6 +1,6 @@
 import { BADGES_ICONS, FILTERS_BADGES } from "@constants/badges";
 import styled from "styled-components";
-import type { Camper } from "@type/camperApiTypes";
+import type { Camper, CamperFilters } from "@type/camperApiTypes";
 
 interface BadgeItem {
   label: string;
@@ -15,6 +15,7 @@ interface BadgesProps {
   >;
   iconWidth?: string;
   iconHeight?: string;
+  filters?: CamperFilters;
 }
 
 export const Badges = ({
@@ -23,6 +24,7 @@ export const Badges = ({
   Badge = BadgeDefault,
   iconWidth,
   iconHeight,
+  filters,
 }: BadgesProps) => {
   const isFilterBadge = Object.values(FILTERS_BADGES).some(
     (arr) => arr === featuresToShow
@@ -64,13 +66,18 @@ export const Badges = ({
         }
 
         if (isFilterBadge) {
+          const isVehicleType = featuresToShow === FILTERS_BADGES.VEHICLE_TYPE;
+          const checked = isVehicleType
+            ? filters?.form === key
+            : filters?.[key] === "true";
+
           return (
-            <Badge key={key}>
+            <Badge key={key} checked={checked}>
               <input
-                type="checkbox"
-                name={key}
+                type={isVehicleType ? "radio" : "checkbox"}
+                name={isVehicleType ? "form" : key}
                 value={key}
-                defaultChecked={false}
+                defaultChecked={checked}
               />
               <BadgeContent>
                 {Icon && (
@@ -101,10 +108,7 @@ export const Badges = ({
 const Box = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 2px;
-  @media (width>=360px) {
-    gap: 8px;
-  }
+  gap: 5px;
 `;
 
 const BadgeContent = styled.span`
@@ -117,6 +121,7 @@ const BadgeContent = styled.span`
   height: 100%;
   user-select: none;
 `;
+
 const BadgeDefault = styled.span`
   display: flex;
   padding: 6px 8px;
@@ -124,6 +129,7 @@ const BadgeDefault = styled.span`
   gap: 8px;
   border-radius: 100px;
   background: var(--Badges);
+  color: var(--Main);
   width: fit-content;
   user-select: none;
   @media (width>=500px) {

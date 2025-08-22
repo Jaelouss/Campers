@@ -12,16 +12,21 @@ import {
 import storage from "redux-persist/lib/storage";
 import favoriteReducer from "./favorite/favoriteSlice";
 import locationsReducer from "./locations/locationsSlice";
+import campersReducer from "./campers/campersSlice";
+import filtersReducer from "./filtersSlice/filtersSlice";
 
 const persistConfig = {
   key: "root",
   version: 1,
   storage,
+  blacklist: ["filters"],
 };
 
 const rootReducer = {
   favorite: favoriteReducer,
   locations: locationsReducer,
+  campers: campersReducer,
+  filters: filtersReducer,
 };
 
 const persistedReducer = persistReducer(

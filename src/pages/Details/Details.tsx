@@ -1,36 +1,39 @@
-import campersApi from "@api";
-import { BookForm, Carousel, FeaturesCard, Reviews } from "@components";
-import { Loader } from "@components/Loader/Loader";
+import { BookForm, Carousel, FeaturesCard, Loader, Reviews } from "@components";
 import { Tabs, CampLocation, Rating, CatalogCardPlaceholder } from "@UI";
-import type { Camper } from "@type/camperApiTypes";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled, { css } from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch } from "@store/store";
+import {
+  selectCampersError,
+  selectCampersLoading,
+  selectSelectedCamper,
+} from "@store/campers/campersSelectors";
+import { fetchCamperById } from "@store/campers/campersActions";
+import { useScrollToHash } from "@hooks/useScrollToHash";
 
 export const Details = () => {
-  const [car, setCar] = useState<Camper | null>(null);
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("Features");
+
+  const dispatch = useDispatch<AppDispatch>();
+  const loading = useSelector(selectCampersLoading);
+  const error = useSelector(selectCampersError);
+  const car = useSelector(selectSelectedCamper);
+
+  useScrollToHash();
 
   const { id } = useParams();
   useEffect(() => {
-    setLoading(true);
-    setError(false);
-    if (id) {
-      campersApi
-        .getById(id)
-        .then(setCar)
-        .catch(() => setError(true))
-        .finally(() => setLoading(false));
-    }
-  }, [id]);
+    if (id) dispatch(fetchCamperById(id));
+  }, [id, dispatch]);
+
   if (error) {
     return <CatalogCardPlaceholder />;
   }
   return (
     <>
-      {loading && <Loader />}
+      {(loading || !car) && <Loader />}
       {car && (
         <Section>
           <Box gap="28px">
@@ -38,6 +41,7 @@ export const Details = () => {
               <Title>{car.name}</Title>
               <RatingWrapper>
                 <Rating
+                  id={car.id}
                   type="Single"
                   rating={car.rating}
                   reviews={car.reviews}

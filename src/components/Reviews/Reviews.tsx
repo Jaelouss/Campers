@@ -4,13 +4,13 @@ import styled from "styled-components";
 
 export const Reviews = ({ reviews }: { reviews: Review[] }) => {
   return (
-    <List>
+    <List id="Reviews">
       {reviews.map((review) => {
         const name = review.reviewer_name;
         const rating = review.reviewer_rating;
         const comment = review.comment;
         return (
-          <Box>
+          <Box key={comment}>
             <Header>
               <Avatar>{name[0].toUpperCase()}</Avatar>
               <NameWrapper>

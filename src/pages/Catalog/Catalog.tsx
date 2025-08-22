@@ -1,39 +1,73 @@
-import campersApi from "@api";
-import { CatalogList } from "@components/CatalogList/CatalogList";
-import { FilterPanel } from "@components/FilterPanel/FilterPanel";
-import { Loader } from "@components/Loader/Loader";
-import type { CampersResponse } from "@type/camperApiTypes";
-import { useEffect, useState } from "react";
+import { FilterPanel, Loader, CatalogList } from "@components";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
+import { useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCampers } from "@store/campers/campersActions";
+import {
+  selectCampers,
+  selectCampersError,
+  selectCampersLoading,
+} from "@store/campers/campersSelectors";
+import type { AppDispatch } from "@store/store";
+import type { CamperFilters } from "@type/camperApiTypes";
+import { selectFilters } from "@store/filtersSlice/filtersSlice";
+
+const convertFiltersToRecord = (
+  filters: CamperFilters
+): Record<string, string> => {
+  const result: Record<string, string> = {};
+  for (const [key, value] of Object.entries(filters)) {
+    if (value !== undefined) {
+      result[key] = value.toString();
+    }
+  }
+  return result;
+};
 
 export const Catalog = () => {
-  const [campers, setCampers] = useState<CampersResponse | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const savedFilters = useSelector(selectFilters);
+  const campers = useSelector(selectCampers);
+  const loading = useSelector(selectCampersLoading);
+  const error = useSelector(selectCampersError);
 
-  const [searchParams] = useSearchParams();
-  const paramsObj = Object.fromEntries(searchParams.entries());
+  const paramsObj = useMemo(
+    () => Object.fromEntries(searchParams.entries()),
+    [searchParams]
+  );
+
+  const effectiveParams = useMemo((): Record<string, string> | undefined => {
+    if (
+      Object.keys(paramsObj).length === 0 &&
+      Object.keys(savedFilters).length > 0
+    ) {
+      return convertFiltersToRecord(savedFilters);
+    }
+    return Object.keys(paramsObj).length > 0 ? paramsObj : undefined;
+  }, [paramsObj, savedFilters]);
 
   useEffect(() => {
-    setLoading(true);
-    setError(false);
+    if (
+      Object.keys(paramsObj).length === 0 &&
+      Object.keys(savedFilters).length > 0
+    ) {
+      setSearchParams(convertFiltersToRecord(savedFilters));
+    }
+  }, [paramsObj, savedFilters, setSearchParams]);
 
-    campersApi
-      .getAll(Object.fromEntries(searchParams.entries()))
-      .then(setCampers)
-      .catch(() => {
-        setCampers({ total: 0, items: [] });
-        setError(true);
-      })
-      .finally(() => setLoading(false));
-  }, [searchParams]);
+  useEffect(() => {
+    if (effectiveParams !== undefined) {
+      dispatch(fetchCampers({ params: effectiveParams }));
+    }
+  }, [dispatch, effectiveParams]);
 
   return (
     <Section>
-      {loading && <Loader />}
-      <FilterPanel filters={paramsObj} />
-      <CatalogList error={error} campers={campers ?? { total: 0, items: [] }} />
+      {(loading || !campers) && <Loader />}
+      <FilterPanel filters={effectiveParams || {}} />
+      <CatalogList error={error} campers={campers} />
     </Section>
   );
 };
@@ -42,11 +76,11 @@ const Section = styled.section`
   display: flex;
   padding: 80px 0 32px;
   gap: 16px;
-  @media (width>=768px) {
+  @media (width >= 768px) {
     gap: 32px;
     padding: 120px 0 52px;
   }
-  @media (width>=1440px) {
+  @media (width >= 1440px) {
     gap: 64px;
   }
 `;

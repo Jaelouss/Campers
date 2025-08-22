@@ -5,6 +5,10 @@ import { FILTERS_BADGES } from "@constants/badges";
 import { useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { htmlScrollLock } from "@utils/htmlScrollLock";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "@store/store";
+import { clearFilters } from "@store/filtersSlice/filtersSlice";
+import { fetchCampers } from "@store/campers/campersActions";
 
 interface Props {
   filters: CamperFilters;
@@ -13,6 +17,7 @@ interface Props {
 export const FilterPanel = ({ filters }: Props) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch<AppDispatch>();
   const [isOpen, setIsOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1440);
 
@@ -40,6 +45,10 @@ export const FilterPanel = ({ filters }: Props) => {
         query[key] = input.checked ? "true" : "false";
         continue;
       }
+      if (input.type === "radio" && input.checked) {
+        query[key] = value.toString();
+        continue;
+      }
       let val = value.toString();
       if (key === "location") {
         val = val.trim().split(",")[0].toLowerCase();
@@ -50,6 +59,14 @@ export const FilterPanel = ({ filters }: Props) => {
 
     const params = new URLSearchParams(query).toString();
     navigate(`${location.pathname}?${params}`);
+    setIsOpen(false);
+    htmlScrollLock(false);
+  };
+
+  const handleReset = () => {
+    dispatch(clearFilters());
+    dispatch(fetchCampers({ reset: true }));
+    navigate(location.pathname);
     setIsOpen(false);
     htmlScrollLock(false);
   };
@@ -105,6 +122,7 @@ export const FilterPanel = ({ filters }: Props) => {
               Badge={FilterCheckBox}
               iconHeight="32px"
               iconWidth="32px"
+              filters={filters}
             />
           </FiltersList>
         </Box>
@@ -118,11 +136,15 @@ export const FilterPanel = ({ filters }: Props) => {
               Badge={FilterCheckBox}
               iconHeight="32px"
               iconWidth="32px"
+              filters={filters}
             />
           </FiltersList>
         </Box>
 
-        <CustomButton type="Search" />
+        <BoxButton>
+          <CustomButton type="Reset" onClick={handleReset} />
+          <CustomButton type="Search" />
+        </BoxButton>
       </Form>
     </>
   );
@@ -133,7 +155,12 @@ const FlexColumnBase = css`
   flex-direction: column;
   align-items: flex-start;
 `;
-
+const BoxButton = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+`;
 const Backdrop = styled.div`
   position: fixed;
   top: 0;
@@ -275,10 +302,13 @@ const FiltersList = styled.div`
 `;
 
 const FilterCheckBox = styled.label.withConfig({
-  shouldForwardProp: (prop) => prop !== "checked",
-})<{ checked?: boolean }>`
-  border: 1px solid
-    ${({ checked }) => (checked ? "var(--Button)" : "var(--Gray-Light)")};
+  shouldForwardProp: (prop) =>
+    !["checked", "iconHeight", "iconWidth"].includes(prop),
+})<{
+  iconHeight?: string;
+  iconWidth?: string;
+}>`
+  border: 1px solid var(--Gray-Light);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -308,5 +338,10 @@ const FilterCheckBox = styled.label.withConfig({
   @media (width>=1440px) {
     width: 112px;
     height: 96px;
+  }
+
+  svg {
+    width: ${({ iconWidth }) => iconWidth || "32px"};
+    height: ${({ iconHeight }) => iconHeight || "32px"};
   }
 `;

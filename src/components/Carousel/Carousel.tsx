@@ -85,8 +85,7 @@ export const Carousel = ({ gallery }: CarouselProps) => {
 
       <ImageModal
         gallery={gallery}
-        activeIndex={activeIndex}
-        setActiveIndex={setActiveIndex}
+        initialIndex={activeIndex} 
         isOpen={isModalOpen}
         onClose={handleCloseModal}
       />
