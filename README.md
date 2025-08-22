@@ -1,69 +1,56 @@
-# React + TypeScript + Vite
+[English version](README-EN.md)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🚐 TravelTrucks
 
-Currently, two official plugins are available:
+Короткий опис:
+TravelTrucks — сайт для оренди кемперів. Користувачі можуть обрати кемпер, переглянути його фотографії, заповнити форму для бронювання та почитати відгуки інших користувачів.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🌟 Основні функції
 
-## Expanding the ESLint configuration
+🖼 Перегляд фотогалереї кемперів
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+📄 Бронювання кемпера через форму
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+🔍 Фільтрація кемперів за різними параметрами
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+⭐ Відгуки користувачів з рейтингами
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+📱 Адаптивний дизайн для будь-якого пристрою
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+⚙️ Інструкції з установки
+git clone https://github.com/Jaelouss/Campers
+cd Campers
+npm install
+npm start
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+🚀 Використання
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Відкрити додаток у браузері (http://localhost:3000)
+
+Використовувати фільтри, щоб знайти потрібний кемпер
+
+Натискати на фотографії для перегляду модалки
+
+Заповнювати форму для бронювання
+
+Читати та залишати відгуки
+
+🛠 Технології
+
+React + TypeScript
+
+styled-components
+
+React Router
+
+Redux Toolkit
+
+React Calendar
+
+Axios
+
+REST API
+
+👤 Автор
+
+Євген Алєксєєв — [GitHub](https://github.com/Jaelouss)
