@@ -16,7 +16,7 @@ import campersReducer from "./campers/campersSlice";
 import filtersReducer from "./filtersSlice/filtersSlice";
 
 const persistConfig = {
-  key: "root",
+  key: "TravelTrucks",
   version: 1,
   storage,
   blacklist: ["filters"],
